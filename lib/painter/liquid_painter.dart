@@ -11,8 +11,8 @@ class LiquidPainter extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
-    double diameter = size.height;
-    double radius = size.height / 2;
+    double diameter = min(size.height, size.width);
+    double radius = diameter / 2;
 
     // Defining coordinate points. The wave starts from the bottom and ends at the top as the value changes.
     double pointX = 0;

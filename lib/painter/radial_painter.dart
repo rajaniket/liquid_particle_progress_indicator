@@ -17,9 +17,14 @@ class RadialProgressPainter extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
-    final double centerX = size.width / 2;
-    final double centerY = size.height / 2;
-    final double radius = size.width / 2;
+    // circle's diameter // taking min side as diameter
+    final double diameter = min(size.height, size.width);
+    // Radius
+    final double radius = diameter / 2;
+    // Center cordinate
+    final double centerX = radius;
+    final double centerY = radius;
+
     const double strokeWidth = 6;
 
     // Paint for the progress with gradient colors.
