@@ -5,7 +5,15 @@ import '../../controllers/particle_controller.dart';
 import '../../painter/particle_painter.dart';
 
 class ParticleAnimation extends StatefulWidget {
-  const ParticleAnimation({Key? key, required this.controller, this.maxAngle = pi, this.minAngle = 0, this.numberOfParticles = 300})
+  const ParticleAnimation(
+      {Key? key,
+      required this.controller,
+      this.maxAngle = pi,
+      this.minAngle = 0,
+      this.numberOfParticles = 300,
+      this.duration = const Duration(seconds: 10),
+      this.minSpeed = 800,
+      this.maxSpeed = 2000})
       : super(key: key);
 
   final ParticleController controller;
@@ -13,20 +21,29 @@ class ParticleAnimation extends StatefulWidget {
   final double maxAngle;
   final int numberOfParticles;
 
+  /// Particles animation duration
+  final Duration duration;
+
+  /// Min speed of particles
+  final int minSpeed;
+
+  /// Max speed of particles
+  final int maxSpeed;
+
   @override
   State<ParticleAnimation> createState() => _ParticleAnimationState();
 }
 
 class _ParticleAnimationState extends State<ParticleAnimation> with SingleTickerProviderStateMixin {
   late AnimationController _animationController;
-  List<ConfettiDot> particles = []; // Store all the particles for animation.
+  List<Particle> particles = []; // Store all the particles for animation.
 
   @override
   void initState() {
     super.initState();
     _animationController = AnimationController(
       vsync: this,
-      duration: const Duration(seconds: 5),
+      duration: widget.duration,
     )
       ..addStatusListener((status) {
         if (status == AnimationStatus.completed || status == AnimationStatus.dismissed) {
@@ -45,6 +62,7 @@ class _ParticleAnimationState extends State<ParticleAnimation> with SingleTicker
     _animationController.dispose();
     widget.controller.removeListener(() {});
     widget.controller.removeListener(_onControllerChange);
+    _generateParticles();
     super.dispose();
   }
 
@@ -64,13 +82,13 @@ class _ParticleAnimationState extends State<ParticleAnimation> with SingleTicker
     for (int i = 0; i < widget.numberOfParticles; i++) {
       // Generate a random angle between minAngle and maxAngle.
       double randomAngle = widget.minAngle + Random().nextDouble() * (widget.maxAngle - widget.minAngle);
-      // Generate a random speed between 800 to 2000.
-      double speed = 800.0 + Random().nextDouble() * 1200.0;
+      // Generate a random speed.
+      double speed = widget.minSpeed + Random().nextDouble() * (widget.maxSpeed - widget.minSpeed);
       particles.add(
-        ConfettiDot(
+        Particle(
           angle: randomAngle,
           color: _getRandomColor(), // Get a random color for the particle.
-          speed: speed, // Random speed between 800 and 2000.
+          speed: speed,
         ),
       );
     }
@@ -85,7 +103,7 @@ class _ParticleAnimationState extends State<ParticleAnimation> with SingleTicker
   @override
   Widget build(BuildContext context) {
     return CustomPaint(
-      painter: ConfettiPainter(particles, _animationController.value), // Paint the confetti particles.
+      painter: ParticlePainter(particles, _animationController.value), // Paint the particles.
     );
   }
 }

@@ -1,6 +1,5 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
-import '../constants/colors.dart';
 
 /// A custom painter that creates a liquid-like animation using a sine wave.
 class LiquidPainter extends CustomPainter {
@@ -30,14 +29,14 @@ class LiquidPainter extends CustomPainter {
     double period = value / maxValue;
 
     // Phase Shift: the horizontal shift of the sine wave along the x-axis.
-    double phaseShift = value * pi * 1.4;
+    double phaseShift = value * pi;
 
     // Plotting the sine wave by connecting various paths till it reaches the diameter.
     // Using this formula: y = A * sin(ωt + φ) + C
     for (double i = 0; i <= diameter; i++) {
       path.lineTo(
         i + pointX,
-        pointY + amplitude * sin((i * 2.1 * period * pi / diameter) + phaseShift),
+        pointY + amplitude * sin((i * 2 * period * pi / diameter) + phaseShift),
       );
     }
 
@@ -49,12 +48,20 @@ class LiquidPainter extends CustomPainter {
     path.close();
 
     Paint paint = Paint()
-      ..shader = SweepGradient(
-        colors: gradientColors,
-        startAngle: -pi / 2,
-        endAngle: 3 * pi / 2,
-        tileMode: TileMode.repeated,
-      ).createShader(Rect.fromCircle(center: Offset(radius, radius), radius: radius))
+      ..shader = const SweepGradient(
+          colors: [
+            Color(0xffFF7A01),
+            Color(0xffFF0069),
+            Color(0xff7639FB),
+          ],
+          startAngle: pi / 2,
+          endAngle: 5 * pi / 2,
+          tileMode: TileMode.clamp,
+          stops: [
+            0.25,
+            0.35,
+            0.5,
+          ]).createShader(Rect.fromCircle(center: Offset(diameter, diameter), radius: radius))
       ..style = PaintingStyle.fill;
 
     // Clipping rectangular-shaped path to Oval.

@@ -17,20 +17,26 @@ class _DemoPageState extends State<DemoPage> with SingleTickerProviderStateMixin
   final ParticleController _particleController = ParticleController();
   bool isPlaying = false;
   int maxDuration = 10;
+  bool isParticlesReady = true;
 
   @override
   void initState() {
     super.initState();
     _controller = AnimationController(vsync: this, duration: Duration(seconds: maxDuration))
       ..addListener(() {
-        setState(
-          () {
-            if (_controller.value * maxDuration == maxDuration) {
-              isPlaying = false;
-              _particleController.start();
-            }
-          },
-        );
+        if (isParticlesReady && _controller.value * maxDuration >= maxDuration - 0.2) {
+          isParticlesReady = false;
+          _particleController.start();
+        }
+        setState(() {});
+      })
+      ..addStatusListener((status) {
+        if (status == AnimationStatus.completed) {
+          isPlaying = false;
+        }
+        if (status == AnimationStatus.forward) {
+          isParticlesReady = true;
+        }
       });
   }
 
@@ -44,7 +50,7 @@ class _DemoPageState extends State<DemoPage> with SingleTickerProviderStateMixin
   Widget build(BuildContext context) {
     double val = (_controller.value * maxDuration);
     return Scaffold(
-      backgroundColor: Color.fromARGB(255, 36, 36, 36),
+      backgroundColor: const Color(0xFF232424),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
@@ -78,8 +84,17 @@ class _DemoPageState extends State<DemoPage> with SingleTickerProviderStateMixin
                   child: Stack(
                     fit: StackFit.expand,
                     children: [
+                      ParticleAnimation(
+                        controller: _particleController,
+                        numberOfParticles: 1500,
+                        minAngle: 0,
+                        maxAngle: 2 * 3.14,
+                        minSpeed: 700,
+                        maxSpeed: 7000,
+                        duration: const Duration(seconds: 10),
+                      ),
                       Padding(
-                        padding: const EdgeInsets.all(4.0),
+                        padding: const EdgeInsets.all(5.0),
                         child: CustomPaint(
                           painter: LiquidPainter(
                             _controller.value * maxDuration,
@@ -87,17 +102,13 @@ class _DemoPageState extends State<DemoPage> with SingleTickerProviderStateMixin
                           ),
                         ),
                       ),
-                      ParticleAnimation(
-                        controller: _particleController,
-                        numberOfParticles: 400,
-                      ),
                       CustomPaint(
                           painter: RadialProgressPainter(
                         value: _controller.value * maxDuration,
                         backgroundGradientColors: gradientColors,
                         minValue: 0,
                         maxValue: maxDuration.toDouble(),
-                      ))
+                      )),
                     ],
                   ),
                 );
@@ -107,7 +118,13 @@ class _DemoPageState extends State<DemoPage> with SingleTickerProviderStateMixin
           ),
           Container(
             alignment: Alignment.center,
-            height: 80,
+            height: 60,
+            decoration: BoxDecoration(
+                border: Border.all(
+                  color: Colors.white54,
+                  width: 2,
+                ),
+                shape: BoxShape.circle),
             child: GestureDetector(
               onTap: () {
                 setState(() {
@@ -121,12 +138,12 @@ class _DemoPageState extends State<DemoPage> with SingleTickerProviderStateMixin
                 });
               },
               child: AnimatedContainer(
-                height: isPlaying ? 40 : 60,
-                width: isPlaying ? 40 : 60,
-                duration: const Duration(milliseconds: 200),
+                height: isPlaying ? 25 : 60,
+                width: isPlaying ? 25 : 60,
+                duration: const Duration(milliseconds: 300),
                 decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(isPlaying ? 8 : 500),
-                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(isPlaying ? 4 : 100),
+                  color: Colors.white54,
                 ),
               ),
             ),

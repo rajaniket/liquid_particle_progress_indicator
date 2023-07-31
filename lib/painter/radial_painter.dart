@@ -20,7 +20,7 @@ class RadialProgressPainter extends CustomPainter {
     final double centerX = size.width / 2;
     final double centerY = size.height / 2;
     final double radius = size.width / 2;
-    const double strokeWidth = 5;
+    const double strokeWidth = 6;
 
     // Paint for the progress with gradient colors.
     final Paint progressPaint = Paint()
