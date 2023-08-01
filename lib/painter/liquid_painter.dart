@@ -40,9 +40,8 @@ class LiquidPainter extends CustomPainter {
       );
     }
 
-    // Plotting a vertical line which connects the right end of the sine wave.
+    // Calculate the start and sweep angles to draw the progress arc.
     path.lineTo(pointX + diameter, diameter);
-    // Plotting a vertical line which connects the left end of the sine wave.
     path.lineTo(pointX, diameter);
     // Closing the path.
     path.close();
