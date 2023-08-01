@@ -60,7 +60,7 @@ class _DemoPageState extends State<DemoPage> with SingleTickerProviderStateMixin
             textBaseline: TextBaseline.alphabetic,
             children: [
               Text(
-                val.toInt().toString(),
+                (val.toInt() * 10).toString(),
                 style: const TextStyle(color: Colors.white, fontSize: 50),
               ),
               Text(
