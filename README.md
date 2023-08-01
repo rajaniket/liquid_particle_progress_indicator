@@ -1,16 +1,13 @@
-# progress_indicator
+# Custom Liquid Progress Indicator with Particle Generator
 
-A new Flutter project.
+This repository contains the code for creating a stunning custom progress indicator and particle generator in Flutter.
 
-## Getting Started
+## Medium Article
 
-This project is a starting point for a Flutter application.
+For a detailed explanation of the implementation refer to this [Medium article](https://medium.com/@aniketraj.go/creating-a-custom-progress-indicator-in-flutter-3a3c1b950619).
 
-A few resources to get you started if this is your first Flutter project:
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+## Preview
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+![ezgif-4-f25fe71fe9](https://github.com/rajaniket/liquid_particle_progress_indicator/assets/40004815/b97c34aa-b170-4eef-b7d5-40a99817c18a)
+
